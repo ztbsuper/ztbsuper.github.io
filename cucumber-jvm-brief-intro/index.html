@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Cucumber-JVM 和Selenium的集成使用 | &#39;博&#39;_客</title>
+  <title>Cucumber-JVM &amp; Selenium WebDirver in BDD | &#39;博&#39;_客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="@TODO待挖坑">
+  <meta name="description" content="TDD现在已经在各种开发团队中进行了很好地开展，但是对于测试和需求方，直接面向代码不是那么现实的本文用given-when-then的理念介绍如何使用使用cucumber-jvm和selenium webdriver对你的web项目进行BDD">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Cucumber-JVM 和Selenium的集成使用">
+<meta property="og:title" content="Cucumber-JVM & Selenium WebDirver in BDD">
 <meta property="og:url" content="http://marvin.github.io/cucumber-jvm-brief-intro/">
 <meta property="og:site_name" content="'博'_客">
-<meta property="og:description" content="@TODO待挖坑">
+<meta property="og:description" content="TDD现在已经在各种开发团队中进行了很好地开展，但是对于测试和需求方，直接面向代码不是那么现实的本文用given-when-then的理念介绍如何使用使用cucumber-jvm和selenium webdriver对你的web项目进行BDD">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Cucumber-JVM 和Selenium的集成使用">
-<meta name="twitter:description" content="@TODO待挖坑">
+<meta name="twitter:title" content="Cucumber-JVM & Selenium WebDirver in BDD">
+<meta name="twitter:description" content="TDD现在已经在各种开发团队中进行了很好地开展，但是对于测试和需求方，直接面向代码不是那么现实的本文用given-when-then的理念介绍如何使用使用cucumber-jvm和selenium webdriver对你的web项目进行BDD">
 
   
     <link rel="alternative" href="/atom.xml" title="&#39;博&#39;_客" type="application/atom+xml">
@@ -112,7 +112,7 @@
   
     <div class="article-meta">
       <a href="/cucumber-jvm-brief-intro/" class="article-date">
-  	<time datetime="2014-09-19T06:21:49.000Z" itemprop="datePublished">Sep 19 2014</time>
+  	<time datetime="2014-09-22T06:21:49.000Z" itemprop="datePublished">Sep 22 2014</time>
 </a>
       
       
@@ -126,7 +126,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Cucumber-JVM 和Selenium的集成使用
+      Cucumber-JVM &amp; Selenium WebDirver in BDD
     </h1>
   
 
@@ -134,8 +134,23 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>@TODO<br>待挖坑</p>
-<a id="more"></a>
+        <blockquote>
+<p>TDD现在已经在各种开发团队中进行了很好地开展，但是对于测试和需求方，直接面向代码不是那么现实的<br>本文用given-when-then的理念介绍如何使用使用cucumber-jvm和selenium webdriver对你的web项目进行BDD</p>
+</blockquote>
+<p><a id="more"></a></p>
+<h1 id="工具和名词简介">工具和名词简介</h1>
+<h2 id="BDD">BDD</h2>
+<p><a href="http://en.wikipedia.org/wiki/Behavior-driven_development" target="_blank" rel="external">Behavior Driven Development</a>，行为驱动开发，简称BDD<br>相对与<a href="http://en.wikipedia.org/wiki/Test-driven_development" target="_blank" rel="external">TDD</a>来说，BDD需要更加关注用户行为，对用户行为进行测试。在敏捷开发团队中，使用BDD的方式可以与业务人员更好地沟通</p>
+<h2 id="Cucumber">Cucumber</h2>
+<p><a href="http://cukes.info" target="_blank" rel="external">cucumber</a>是用于管理BDD用例的框架，本身采用ruby编写，本篇采用cucumber-jvm作为示例</p>
+<h2 id="Selenium_WebDriver">Selenium WebDriver</h2>
+<p><a href="http://www.seleniumhq.org/" target="_blank" rel="external">Selenium WebDriver</a>是用来自动化执行用例的，webdriver是一个接口，可以通过实现webdriver进行很多客户端执行，例如本文中将会提到firefox接口和phantomjs接口，同时还有android的实现</p>
+<h2 id="PhantomJS">PhantomJS</h2>
+<p><a href="http://phantomjs.org/" target="_blank" rel="external">PhantomJS</a>是nodejs编写的一个webkit执行器，可以对URL进行解析渲染，并支持保存成图片，可以通过npm进行安装，也可以通过二进制包下载安装</p>
+<h2 id="Gradle">Gradle</h2>
+<p><a href="http://www.gradle.org/" target="_blank" rel="external">gradle</a> 是java构建工具，采用groovy编写，相比于maven它更灵活，把maven冗长的xml配置变成了精简的代码</p>
+<h1 id="工程">工程</h1>
+
       
     </div>
     <footer class="article-footer">
@@ -147,18 +162,9 @@
     
 <nav id="article-nav">
   
-    <a href="/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          Hello World
-        
-      </div>
-    </a>
   
-  
-    <a href="/about/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">关于博主</div>
+    <a href="/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -187,7 +193,7 @@
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="cucumber-jvm-brief-intro" data-title="Cucumber-JVM 和Selenium的集成使用" data-url="http://marvin.github.io/cucumber-jvm-brief-intro/"></div>
+	<div class="ds-thread" data-thread-key="cucumber-jvm-brief-intro" data-title="Cucumber-JVM &amp; Selenium WebDirver in BDD" data-url="http://marvin.github.io/cucumber-jvm-brief-intro/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">

@@ -145,7 +145,7 @@
 <li><a href="#implement_test">实现你的测试场景</a></li>
 <li><a href="#implement_code">实现你的业务代码</a></li>
 <li><a href="#run_in_webdriver">引入web driver</a></li>
-<li><a href="#giveup_gui">扔掉GUI</a></li>
+<li><a href="#non-gui">扔掉GUI</a></li>
 <li><a href="#summary">总结和引申</a></li>
 </ol>
 <hr>
@@ -277,7 +277,9 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="annotation">@Then</span>(<span class="string">"^I should get my username (.*) on the page$"</span>)</div><div class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">I_should_get_my_username_username_on_the_page</span>(String username) <span class="keyword">throws</span> Throwable {</div><div class="line">    assertTrue(driver.findElement(By.id(<span class="string">"content"</span>)).getText().contains(<span class="string">"welcome, "</span> + username));</div><div class="line">}</div></pre></td></tr></table></figure>
 
 <p>我们改动一下期望值，那么执行就会提示有场景执行失败，此处就不做过多演示</p>
-<p>@未完待续</p>
+<h1 id="扔掉GUI"><h1 id="non-gui">扔掉GUI</h1></h1>
+<p>调试的时候，我们需要对自动化代码进行回放，进行测试。但是当我们把自动化代码放到其他环境的时候，是否还是需要启动一个新的浏览器？是不是也要在界面上执行？<br>不，这样对环境依赖太强了，你必须得安装了firefox或者chrome才能进行测试，我们如何扔掉这些依赖呢？<br>当当当当～～～让我们迎接PhantomJS吧！</p>
+<p>@TODO 未完待续</p>
 </h1>
       
     </div>
@@ -357,10 +359,8 @@
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
     ga('create', 'UA-39219562-3', 'auto');
     ga('send', 'pageview');
-
   </script>
 </footer>
     </div>

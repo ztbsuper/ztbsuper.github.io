@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>在jUnit中使用Mockito进行行为驱动开发 | &#39;博&#39;_客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Mockito网上讲了通篇道理，这里随手记一下简单的使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在jUnit中使用Mockito进行行为驱动开发">
+<meta property="og:url" content="http://marvin.github.io/BDD-in-junit-by-Mockito/">
+<meta property="og:site_name" content="'博'_客">
+<meta property="og:description" content="Mockito网上讲了通篇道理，这里随手记一下简单的使用。">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在jUnit中使用Mockito进行行为驱动开发">
+<meta name="twitter:description" content="Mockito网上讲了通篇道理，这里随手记一下简单的使用。">
+
+  
+    <link rel="alternative" href="/atom.xml" title="&#39;博&#39;_客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<div class="profilepic">
+			<img src="/img/avatar.jpeg">
+		</div>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Marvin Zhang</a></h1>
+		</hgroup>
+
+		
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/archives">所有文章</a></li>
+	        
+				<li><a href="/tags/笔记">随笔</a></li>
+	        
+				<li><a href="/about">关于博主</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/ztbsuper" title="github">github</a>
+		        
+					<a class="weibo" target="_blank" href="http://weibo.com/u/3205480660" title="weibo">weibo</a>
+		        
+					<a class="linkedin" target="_blank" href="http://lnkd.in/bKuMhtM" title="linkedin">linkedin</a>
+		        
+			</div>
+		</nav>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay"></div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="/img/avatar.jpeg">
+			</div>
+
+			<hgroup>
+			  <h1 class="header-author"><a href="/">Marvin Zhang</a></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags/笔记">随笔</a></li>
+		        
+					<li><a href="/about">关于博主</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/ztbsuper" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/u/3205480660" title="weibo">weibo</a>
+			        
+						<a class="linkedin" target="_blank" href="http://lnkd.in/bKuMhtM" title="linkedin">linkedin</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <article id="post-BDD-in-junit-by-Mockito" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/BDD-in-junit-by-Mockito/" class="article-date">
+  	<time datetime="2014-10-16T02:26:11.000Z" itemprop="datePublished">Oct 16 2014</time>
+</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BDD/">BDD</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TEST/">TEST</a></li></ul>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      在jUnit中使用Mockito进行行为驱动开发
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>Mockito网上讲了通篇道理，这里随手记一下简单的使用。<br><a id="more"></a></p>
+</blockquote>
+<h1 id="Mockito能帮你干什么">Mockito能帮你干什么</h1>
+<p>Mockito是mock 对象的，在我们平时写UT的时候肯定遇到过各种问题：</p>
+<ul>
+<li>在Service里注入了DAO，我测试的时候还得连着DAO测，慢，而且依赖很深</li>
+<li>DAO里不见得有你这个用例所有的数据，我测这个service的时候还得准备半天的数据</li>
+<li>比如我要测service，我本应该测的是service的逻辑，但是我还是测试了DAO</li>
+</ul>
+<p>如果你不想每次测service的时候都把DAO测了，也不想花半天时间为一个TC做数据准备，mockito一定能帮上你。</p>
+<p>事实上Mockito就是做这件事情的<br>Mockit可以让你Mock任意对象，可以对这个对象的一个行为进行模拟<br>比如一个UserDAO，你希望给一个username就返回一个User对象，传统方法就是，你得真有这个数据<br>如果我们用了Mockito，我们完全可以Mock一个假的User数据。</p>
+<h1 id="在用到spring的时候如何去mock对象">在用到spring的时候如何去mock对象</h1>
+<p>如果你是用注解变量来进行对象注入，就像这样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GoodsService</span> </span>{</div><div class="line"></div><div class="line">    <span class="annotation">@Autowired</span></div><div class="line">    GoodsDAO goodsDAO;</div><div class="line">    <span class="annotation">@Autowired</span></div><div class="line">    GoodsItemDAO goodsItemDAO;</div></pre></td></tr></table></figure>
+
+<p>那么先改造吧，我们应该用构造方法来进行注入，这样在做UT的时候，通过构造方法就可以构造出Mock的DAO了， 就像这样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="annotation">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SalesManService</span> </span>{</div><div class="line"></div><div class="line">    SalesManDAO salesManDAO;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="title">SalesManService</span>(){</div><div class="line"></div><div class="line">    }</div><div class="line">    <span class="annotation">@Autowired</span></div><div class="line">    <span class="keyword">public</span> <span class="title">SalesManService</span>(SalesManDAO salesManDAO) {</div><div class="line">        <span class="keyword">this</span>.salesManDAO = salesManDAO;</div><div class="line">    }</div></pre></td></tr></table></figure>
+
+<p>这样做有一点不好，就是我如果我对已有的Service进行扩展，在Service已经有了很多TC的情况下，直接新增构造方法的参数是比较烦的，那就只有重载构造方法，不过更改多了，构造方法都要写挺长的。</p>
+<p>另外，Spring会自动找无参数构造方法，所以要重载一个无参构造方法</p>
+<h1 id="动手写带Mock对象的TestCase">动手写带Mock对象的TestCase</h1>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SalesManControllerTest</span> </span>{</div><div class="line"></div><div class="line">    SalesManController salesManController;</div><div class="line">    SalesManDAO salesManDAO;</div><div class="line"></div><div class="line">    <span class="annotation">@Before</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUp</span>() <span class="keyword">throws</span> Exception {</div><div class="line">        salesManDAO =   mock(SalesManDAO.class);</div><div class="line"></div><div class="line">        given(salesManDAO.getSalesManByWorkNumber(<span class="string">"10"</span>)).willReturn(<span class="keyword">new</span> SalesMan());</div><div class="line"></div><div class="line">        salesManController = <span class="keyword">new</span> SalesManController(salesManDAO);</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="annotation">@Test</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">should_return_200_when_found_staff</span>(){</div><div class="line">        assertThat(salesManController.getSalesManByWorkNumber(<span class="string">"10"</span>).getStatus(),is(<span class="number">200</span>));</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="annotation">@Test</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">should_return_204_when_not_found_staff</span>(){</div><div class="line">        assertThat(salesManController.getSalesManByWorkNumber(<span class="string">"101"</span>).getStatus(),is(<span class="number">204</span>));</div><div class="line">    }</div></pre></td></tr></table></figure>
+
+<p>以上是一个很简单的测试 ，如果在传统测试上，我必须准备一条：工号＝10的销售，在这里，我直接Mock出了一个工号＝10的销售，方法是通告DAO的getXX方法，直接返回一个SalesMan对象，这样，这个对象就确保是真的了。<br>测试用例根据功能来写的，如果这个工号的员工存在，就返回200，如果没有，就返回204。</p>
+<h1 id="小结">小结</h1>
+<p>Mockito在有对象依赖关系的场合里比较好使，比如Service和DAO层就是一个很好的例子，我在测Service的时候就没必要去测试DAO里面的数据，数据的准确性应该交给DAO或者其他的去测，逻辑就应该做好逻辑的事情。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/get-openstack-s-snapshot-from-remote-to-local/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">将openstack的snapshot获取到本地</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="BDD-in-junit-by-Mockito" data-title="在jUnit中使用Mockito进行行为驱动开发" data-url="http://marvin.github.io/BDD-in-junit-by-Mockito/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ztbsuper"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2014 Marvin Zhang
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-39219562-3', 'auto');
+    ga('send', 'pageview');
+  </script>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+  </div>
+</body>
+</html>
